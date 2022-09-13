@@ -29,15 +29,16 @@
   "devDependencies": {
     "callsite-record": "^3.2.0",
     "del": "^1.2.0",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.1",
-    "gulp-mocha": "^2.2.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-mocha": "^8.0.0",
     "normalize-newline": "^1.0.2",
-    "publish-please": "^2.1.4",
+    "publish-please": "^5.5.2",
     "read-file-relative": "^1.2.0",
-    "testcafe": "^0.2.0-alpha"
+    "testcafe": "^15.1.317922"
   },
   "dependencies": {
+    "@babel/core": "^7.19.0",
     "@slack/web-api": "^6.7.2",
     "dotenv": "^7.0.0",
     "slack-node": "^0.1.8"

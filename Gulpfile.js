@@ -7,18 +7,18 @@ gulp.task('clean', function (cb) {
   del('lib', cb);
 });
 
-gulp.task('build', ['clean'], function () {
+gulp.task('build', function () {
   return gulp
-    .src('src/**/*.js')
+    .src('src/index.js')
     .pipe(babel())
     .pipe(gulp.dest('lib'));
 });
 
-gulp.task('watch', ['build'], function () {
+gulp.task('watch', function () {
   gulp.watch('src/*.js', ['build']);
 });
 
-gulp.task('test', ['build'], function () {
+gulp.task('test', function () {
   return gulp
     .src('test/**.js')
     .pipe(mocha({
@@ -28,7 +28,7 @@ gulp.task('test', ['build'], function () {
     }));
 });
 
-gulp.task('preview', ['build'], function () {
+gulp.task('preview', function () {
   const buildReporterPlugin = require('testcafe').embeddingUtils.buildReporterPlugin;
   const pluginFactory = require('./lib');
   const reporterTestCalls = require('./test/utils/reporter-test-calls');

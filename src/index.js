@@ -89,7 +89,7 @@ export default function () {
       }) */
     },
 
-    reportTaskDone(endTime, passed, warnings, result) {
+    async reportTaskDone(endTime, passed, warnings, result) {
 /*       const endTimeFormatted = this.moment(endTime).format('M/D/YYYY h:mm:ss a');
       const durationMs = endTime - this.startTime;
       const durationFormatted = this.moment
