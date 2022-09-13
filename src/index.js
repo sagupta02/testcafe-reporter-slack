@@ -5,7 +5,8 @@
 // import { bold, italics } from './utils/textFormatters';
 
 // const { loggingLevel } = config;
-import WebClient from "@slack/web-api";
+import { WebClient } from "@slack/web-api";
+
 import * as dotenv from 'dotenv';
 dotenv.config()
 
