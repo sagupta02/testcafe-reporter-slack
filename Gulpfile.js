@@ -10,9 +10,7 @@ gulp.task('clean', function (cb) {
 gulp.task('build', function () {
   return gulp
     .src('src/index.js')
-    .pipe(babel({
-      presets: ['@babel/env']
-  }))
+    .pipe(babel())
     .pipe(gulp.dest('lib'));
 });
 
