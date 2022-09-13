@@ -19,7 +19,8 @@
     "test": "gulp test",
     "publish-please": "publish-please",
     "prod": "gulp --production",
-    "dev": "gulp watch"
+    "dev": "gulp watch",
+    "clean": "gulp clean"
   },
   "keywords": [
     "testcafe",
@@ -27,6 +28,8 @@
     "plugin"
   ],
   "devDependencies": {
+    "@babel/core": "^7.19.0",
+    "@babel/preset-env": "^7.19.0",
     "callsite-record": "^3.2.0",
     "del": "^1.2.0",
     "gulp": "^4.0.2",
@@ -38,7 +41,6 @@
     "testcafe": "^15.1.317922"
   },
   "dependencies": {
-    "@babel/core": "^7.19.0",
     "@slack/web-api": "^6.7.2",
     "dotenv": "^7.0.0",
     "slack-node": "^0.1.8"
