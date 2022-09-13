@@ -1,14 +1,14 @@
 {
-  "name": "testcafe-reporter-slack",
+  "name": "testcafe-reporter-slack-mntv",
   "version": "0.1.0",
   "description": "TestCafe slack reporter plugin.",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Shafied/testcafe-reporter-slack.git"
+    "url": "git@github.com:sagupta02/testcafe-reporter-slack.git"
   },
   "author": {
-    "name": "Shafied",
-    "email": "shafiedn@gmail.com"
+    "name": "Sarthak Gupta",
+    "email": "sagupta@surveymonkey.com"
   },
   "main": "lib/index",
   "files": [
@@ -18,7 +18,6 @@
     "build": "gulp build",
     "test": "gulp test",
     "publish-please": "publish-please",
-    "prepublish": "publish-please guard",
     "prod": "gulp --production",
     "dev": "gulp watch"
   },
@@ -39,6 +38,7 @@
     "testcafe": "^0.2.0-alpha"
   },
   "dependencies": {
+    "@slack/web-api": "^6.7.2",
     "dotenv": "^7.0.0",
     "slack-node": "^0.1.8"
   }
