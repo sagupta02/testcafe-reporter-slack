@@ -1,6 +1,6 @@
 {
   "name": "testcafe-reporter-slack-mntv",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "TestCafe slack reporter plugin.",
   "repository": {
     "type": "git",
