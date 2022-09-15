@@ -1,10 +1,10 @@
 {
-  "name": "testcafe-reporter-slack-mntv",
+  "name": "@getfeedback/testcafe-reporter-slack",
   "version": "0.7.0",
   "description": "TestCafe slack reporter plugin.",
   "repository": {
     "type": "git",
-    "url": "git@github.com:sagupta02/testcafe-reporter-slack.git"
+    "url": "github:GetFeedback/testcafe-reporter-slack"
   },
   "author": {
     "name": "Sarthak Gupta",

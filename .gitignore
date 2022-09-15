@@ -1,7 +1,5 @@
 .idea
 node_modules
 media
-
-
 yarn.lock
-package-lock.json
+

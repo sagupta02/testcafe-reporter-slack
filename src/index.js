@@ -1,10 +1,3 @@
-// import config from './config';
-// import SlackMessage from './SlackMessage';
-// import LoggingLevels from './const/LoggingLevels';
-// import emojis from './utils/emojis';
-// import { bold, italics } from './utils/textFormatters';
-
-// const { loggingLevel } = config;
 import { WebClient } from "@slack/web-api";
 
 import * as dotenv from 'dotenv';
@@ -12,7 +5,9 @@ dotenv.config()
 
 const token = process.env.SLACK_TOKEN;
 const conversationId = process.env.TESTCAFE_SLACK_CHANNEL;
-console.log(token);
+const gitlabPipelineId = process.env.CI_PIPELINE_ID;
+const gitlabJobId = process.env.CI_JOB_ID;
+const testReportBasePath = process.env.TEST_REPORT_BASE_PATH;
 
 const testTagArray = [];
 let messages = [];
@@ -20,7 +15,6 @@ let messages = [];
 const web = new WebClient(token);
 
 const generateSection = (messages) => {
-  // eslint-disable-next-line prettier/prettier
   const newMessage = messages.join("\n:no_entry: ");
   console.log(`*Failed tests:*\n:no_entry: ${newMessage}`);
   return {
@@ -42,19 +36,19 @@ export default function () {
       this.startTime = startTime;
       this.testCount = testCount;
 
-      // const startTimeFormatted = this.moment(this.startTime).format('M/D/YYYY h:mm:ss a');
-
       console.log(`Report task start is running now with ${userAgents}!!!!`);
     },
 
     reportFixtureStart(name, path) {
+      /* Gets executed before each fixture */
       this.currentFixtureName = name;
 
       console.log('Report fixture start is running now!!!!');
     },
 
     reportTestDone(name, testRunInfo, meta) {
-      // const hasErr = !!testRunInfo.errs.length;
+      /* Gets executed after execution of each test */
+
       this.testRunInfo = testRunInfo;
       // Scan the array for the value of the tag, If it exists , skip it . If not add it
       if (!testTagArray.includes(meta.testType)) {
@@ -70,55 +64,15 @@ export default function () {
       } 
 
       console.log('Report test done is running now!!!!');
-      /* let message = null;
-
-      if (testRunInfo.skipped) {
-        message = `${emojis.fastForward} ${italics(name)} - ${bold('skipped')}`;
-      } else if (hasErr) {
-        message = `${emojis.fire} ${italics(name)} - ${bold('failed')}`;
-        this.renderErrors(testRunInfo.errs);// we dont need it this is for exception
-      } else {
-        message = `${emojis.checkMark} ${italics(name)}` // we dont need to show pass tests
-      }
-
-      if (loggingLevel === LoggingLevels.TEST) this.slack.addMessage(message);
     },
 
-    renderErrors(errors) {
-      errors.forEach((error, id) => {
-        this.slack.addErrorMessage(this.formatError(error, `${id + 1} `));
-      }) */
-    },
-
-    async reportTaskDone(endTime, passed, warnings, result) {
-/*       const endTimeFormatted = this.moment(endTime).format('M/D/YYYY h:mm:ss a');
-      const durationMs = endTime - this.startTime;
-      const durationFormatted = this.moment
-        .duration(durationMs)
-        .format('h[h] mm[m] ss[s]');
-
-      const finishedStr = `${emojis.finishFlag} Testing finished at ${bold(endTimeFormatted)}\n`;
-      const durationStr = `${emojis.stopWatch} Duration: ${bold(durationFormatted)}\n`;
-      let summaryStr = '';
-
-      if (result.skippedCount) summaryStr += `${emojis.fastForward} ${bold(`${result.skippedCount} skipped`)}\n`;
-
-      if (result.failedCount) {
-        summaryStr += `${emojis.noEntry} ${bold(`${result.failedCount}/${this.testCount} failed`)}`
-      } else {
-        summaryStr += `${emojis.checkMark} ${bold(`${result.passedCount}/${this.testCount} passed`)}`
-      }
-
-      const message = `\n\n${finishedStr} ${durationStr} ${summaryStr}`;
-
-      this.slack.addMessage(message);
-      this.slack.sendTestReport(this.testCount - passed); */
-
+    reportTaskDone(endTime, passed, warnings,result) {
+      /* Gets executed after execution of all tests and fixtures */
       this.testResult = result;
+      let blockBodyAction, blockBodyMain, blockBodyTestMessage;
+      blockBodyTestMessage = generateSection(messages);
 
-      const blockBodyTestMessage = generateSection(messages);
-
-      const blockBodyMain = [
+      blockBodyMain = [
         {
           type: 'header',
           text: {
@@ -145,7 +99,7 @@ export default function () {
         },
       ];
 
-      const blockBodyAction = {
+      blockBodyAction = {
         type: 'actions',
         elements: [
           {
@@ -153,9 +107,9 @@ export default function () {
             text: {
               type: 'plain_text',
               emoji: true,
-              text: 'Gitlab Pipeline',
+              text: 'Gitlab Job',
             },
-            url: 'https://gitlab.usabilla.net/usabilla/dev/direct/test-cafe-shaker/-/jobs/2133149',
+            url: `https://gitlab.usabilla.net/usabilla/dev/direct/test-cafe-shaker/-/jobs/${gitlabJobId}`,
             value: 'click_me_123',
           },
           {
@@ -165,7 +119,7 @@ export default function () {
               emoji: true,
               text: 'Test Report',
             },
-            url: 'https://www.intranet.usabilla.nl/qa/testcafe/325287/2133149/',
+            url: `${testReportBasePath}/${gitlabPipelineId}/${gitlabJobId}`,
             value: 'click_me_123',
           },
         ],
@@ -173,14 +127,14 @@ export default function () {
 
       blockBodyMain.push(blockBodyTestMessage);
       blockBodyMain.push(blockBodyAction);
+      
       // Post a message to the channel, and await the result.
-      await web.chat.postMessage({
+      web.chat.postMessage({
         text: 'Hello world!',
         channel: conversationId,
         blocks: blockBodyMain,
       });
 
-      // The result contains an identifier for the message, `ts`.
       console.log(
         `Successfully send message in conversation ${conversationId}`
       );
